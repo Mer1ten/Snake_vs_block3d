@@ -8,6 +8,8 @@ public class FoodScore : MonoBehaviour
     public int ScoreEat;
     public bool Status = true;
     public TextMesh ScoreT;
+    public float ColorChange;
+    public GameObject gt;
     void Start()
     {
         
@@ -16,6 +18,8 @@ public class FoodScore : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        ColorChange = ScoreEat / 50f;
+        gt.GetComponent<Renderer>().material.SetFloat("_Color", ColorChange);
         ScoreT.text = ScoreEat.ToString();
         if (Status == false)
         {
