@@ -14,14 +14,17 @@ public class BlockBreak : MonoBehaviour
     {
         
     }
-
+    private void Awake()
+    {
+        ScoreBreak = Random.Range(1, 9);
+    }
     // Update is called once per frame
     void Update()
     {
         ColorChange = ScoreBreak / 50f;
 
         gt.GetComponent<Renderer>().material.SetFloat("_Color", ColorChange);
-        ScoreT.text = ScoreBreak.ToString();
+        ScoreT.text = (ScoreBreak+1).ToString();
         if (ScoreBreak <= 0)
             Destroy(gameObject);
     }

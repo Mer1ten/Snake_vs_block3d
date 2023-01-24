@@ -14,13 +14,16 @@ public class FoodScore : MonoBehaviour
     {
         
     }
-
+    private void Awake()
+    {
+        ScoreEat = Random.Range(1, 10);
+    }
     // Update is called once per frame
     void Update()
     {
         ColorChange = ScoreEat / 50f;
         gt.GetComponent<Renderer>().material.SetFloat("_Color", ColorChange);
-        ScoreT.text = ScoreEat.ToString();
+        ScoreT.text = (ScoreEat+1).ToString();
         if (Status == false)
         {
             Destroy(gameObject);
