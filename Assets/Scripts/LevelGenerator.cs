@@ -12,7 +12,7 @@ public class LevelGenerator : MonoBehaviour
         
         for (int i = 0; i < 23; i++)
         {
-            float k = Random.Range(0, 4);
+            float k = Random.Range(0, 8);
             if (k > 1)
             {
                 int prefabIndex = Random.Range(0, FoodPrefabs.Length);

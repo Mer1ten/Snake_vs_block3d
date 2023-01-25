@@ -24,7 +24,7 @@ public class BlockBreak : MonoBehaviour
         ColorChange = ScoreBreak / 50f;
 
         gt.GetComponent<Renderer>().material.SetFloat("_Color", ColorChange);
-        ScoreT.text = (ScoreBreak+1).ToString();
+        ScoreT.text = (ScoreBreak).ToString();
         if (ScoreBreak <= 0)
             Destroy(gameObject);
     }

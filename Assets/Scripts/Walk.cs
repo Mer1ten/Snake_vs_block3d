@@ -17,19 +17,29 @@ public class Walk : MonoBehaviour
     public List<Transform> Tails;
     public float BonesDistance;
     public GameObject BonePrefab;
-    
-
+    public GameLogic GL;
+    public Progress pg;
+    public Transform Finish;
     void Start()
     {
         Application.targetFrameRate = 90;
         PlayerSphere = GetComponent<Rigidbody>();
+        for (int i = 0; i < CurrentScore; i++)
+        {
+            var bone = Instantiate(BonePrefab);
+            Tails.Add(bone.transform);
+        }
+        CurrentScore = Tails.Count();
+        Score.text = CurrentScore.ToString();
     }
 
     
     void Update()
     {
-        CurrentScore = Tails.Count()+1;
-        Score.text = CurrentScore.ToString();
+        if (gameObject.transform.position.z > Finish.position.z )
+        {
+            GL.OnPlayerFinish();
+        }
 
     }
     private void FixedUpdate()
@@ -81,16 +91,28 @@ public class Walk : MonoBehaviour
                 var bone = Instantiate(BonePrefab);
                 Tails.Add(bone.transform);
             }
+            CurrentScore = Tails.Count();
+            Score.text = CurrentScore.ToString();
             food.Status = false;
         }
         if (other.TryGetComponent(out BlockBreak block))
         {
             int blockscore = block.ScoreBreak;
-            for (int i = 0; i < blockscore + 1; i++)
+            for (int i = 0; i < blockscore; i++)
             {
-                block.ScoreBreak -= 1;
-                Tails[Tails.Count - 1].transform.localScale = new Vector3(0, 0, 0);
-                Tails.RemoveAt(Tails.Count - 1);
+                if (block.ScoreBreak >= 1 && Tails.Count >=1)
+                {
+                    block.ScoreBreak -= 1;
+                    Tails[Tails.Count - 1].transform.localScale = new Vector3(0, 0, 0);
+                    Tails.RemoveAt(Tails.Count - 1);
+                    CurrentScore = Tails.Count();
+                    Score.text = CurrentScore.ToString();
+                    pg.CurScore++;
+                }
+                if (Tails.Count == 0)
+                {
+                    GL.OnPlayerDie();
+                }
             }
         }
     }
