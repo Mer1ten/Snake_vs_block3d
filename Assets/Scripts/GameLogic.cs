@@ -12,6 +12,10 @@ public class GameLogic : MonoBehaviour
     public Text CurLevel;
     public Text NextLevel;
 
+    private void Start()
+    {
+        
+    }
     private void Awake()
     {
         WinScreen.SetActive(false);

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using static UnityEditor.PlayerSettings;
+using UnityEngine.UI;
 
 public class Walk : MonoBehaviour
 {
@@ -20,8 +20,11 @@ public class Walk : MonoBehaviour
     public GameLogic GL;
     public Progress pg;
     public Transform Finish;
+    public Text LevelComplete;
+    public bool checer;
     void Start()
     {
+        
         Application.targetFrameRate = 90;
         PlayerSphere = GetComponent<Rigidbody>();
         for (int i = 0; i < CurrentScore; i++)
@@ -38,6 +41,7 @@ public class Walk : MonoBehaviour
     {
         if (gameObject.transform.position.z > Finish.position.z )
         {
+            LevelComplete.text = "Уровень " + GL.LevelIndex.ToString() + "  пройден";
             GL.OnPlayerFinish();
         }
 
@@ -95,26 +99,55 @@ public class Walk : MonoBehaviour
             Score.text = CurrentScore.ToString();
             food.Status = false;
         }
+        
+              
+        
+    }
+    private void OnTriggerExit(Collider other)
+    {
         if (other.TryGetComponent(out BlockBreak block))
         {
+            checer = false;
+            StopAllCoroutines();
+        }
+    }
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.TryGetComponent(out BlockBreak block))
+        {
+            checer = true;
             int blockscore = block.ScoreBreak;
-            for (int i = 0; i < blockscore; i++)
+            StartCoroutine(timer());
+            IEnumerator timer()
             {
-                if (block.ScoreBreak >= 1 && Tails.Count >=1)
+                for (int i = 0; i < blockscore; i++)
                 {
-                    block.ScoreBreak -= 1;
-                    Tails[Tails.Count - 1].transform.localScale = new Vector3(0, 0, 0);
-                    Tails.RemoveAt(Tails.Count - 1);
-                    CurrentScore = Tails.Count();
-                    Score.text = CurrentScore.ToString();
-                    pg.CurScore++;
-                }
-                if (Tails.Count == 0)
-                {
-                    GL.OnPlayerDie();
+                    if (checer)
+                    {
+                        if (block.ScoreBreak >= 1 && Tails.Count >= 1)
+                        {
+                            block.ScoreBreak -= 1;
+                            Tails[Tails.Count - 1].transform.localScale = new Vector3(0, 0, 0);
+                            Tails.RemoveAt(Tails.Count - 1);
+                            CurrentScore = Tails.Count();
+                            Score.text = CurrentScore.ToString();
+                            pg.CurScore++;
+
+                        }
+                        if (Tails.Count == 0)
+                        {
+                            GL.OnPlayerDie();
+                        }
+                        yield return new WaitForSeconds(0.1f);
+                    }
+                    else
+                    {
+                        blockscore = 0;
+                        checer = true;
+                        StopCoroutine(timer());
+                    }
                 }
             }
         }
     }
-
 }
