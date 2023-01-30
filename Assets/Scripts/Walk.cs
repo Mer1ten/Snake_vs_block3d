@@ -22,9 +22,18 @@ public class Walk : MonoBehaviour
     public Transform Finish;
     public Text LevelComplete;
     public bool checer;
+    private float ChangeColor;
+    public Material material;
+    public AudioSource audioSource;
+    public AudioSource audioSource2;
+
     void Start()
     {
-        
+        CurrentScore = PlayerPrefs.GetInt("CurScore");
+        if (CurrentScore <=0)
+        {
+            CurrentScore = 5;
+        }
         Application.targetFrameRate = 90;
         PlayerSphere = GetComponent<Rigidbody>();
         for (int i = 0; i < CurrentScore; i++)
@@ -39,8 +48,11 @@ public class Walk : MonoBehaviour
     
     void Update()
     {
+        ChangeColor = CurrentScore / 60f;
+        material.SetFloat("_Color", ChangeColor);
         if (gameObject.transform.position.z > Finish.position.z )
         {
+            audioSource.Play();
             LevelComplete.text = "Уровень " + GL.LevelIndex.ToString() + "  пройден";
             GL.OnPlayerFinish();
         }
@@ -88,7 +100,7 @@ public class Walk : MonoBehaviour
     {
         if (other.TryGetComponent(out FoodScore food))
         {
-            
+            audioSource2.Play();
             int foodscore = food.ScoreEat;
             for (int i= 0; i < foodscore+1; i++)
             {
@@ -136,6 +148,7 @@ public class Walk : MonoBehaviour
                         }
                         if (Tails.Count == 0)
                         {
+                            
                             GL.OnPlayerDie();
                         }
                         yield return new WaitForSeconds(0.1f);

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using static UnityEngine.Rendering.DebugUI;
 
 public class GameLogic : MonoBehaviour
 {
@@ -11,6 +12,8 @@ public class GameLogic : MonoBehaviour
     public GameObject LoseScreen;
     public Text CurLevel;
     public Text NextLevel;
+    public AudioSource audioSource2;
+    public Progress pg;
 
     private void Start()
     {
@@ -25,17 +28,25 @@ public class GameLogic : MonoBehaviour
     }
     public void OnPlayerDie()
     {
-       WALK.enabled = false;
-        
+        WALK.enabled = false;
+        audioSource2.Play();
+        PlayerPrefs.Save();
+        PlayerPrefs.SetInt("ScoreCur", 0);
+        PlayerPrefs.SetInt("CurScore", 5);
+        PlayerPrefs.Save();
         LoseScreen.SetActive(true);
     }
     public void OnPlayerFinish()
     {
+
+        
         Debug.Log("FInifs");
         WALK.enabled = false;
-        
         LevelIndex++;
         WinScreen.SetActive(true);
+        PlayerPrefs.SetInt("ScoreCur", pg.CurScore);
+        PlayerPrefs.SetInt("CurScore", WALK.CurrentScore);
+        PlayerPrefs.Save();
     }
     public void ReloadLevel()
     {

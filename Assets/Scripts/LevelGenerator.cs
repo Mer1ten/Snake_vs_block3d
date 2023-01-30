@@ -34,7 +34,7 @@ public class LevelGenerator : MonoBehaviour
     }
     private Vector3 CalculatFoodPos(int FoodIndex)
     {
-        float k =Random.Range(-3,3);
+        float k =Random.Range(-2.5f,2.5f);
         return new Vector3(k, 1, 10 * FoodIndex + Random.Range(2,8));
     }
 
