@@ -719,7 +719,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4583159034645868782, guid: bf42b06174b78534081530fe4d73901d, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -22.53429
+      value: -22.71
       objectReference: {fileID: 0}
     - target: {fileID: 4583159034645868782, guid: bf42b06174b78534081530fe4d73901d, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1286,6 +1286,7 @@ MonoBehaviour:
   - {fileID: 2122067230}
   FoodPrefabs:
   - {fileID: 1888994970}
+  gl: {fileID: 422895458}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
